@@ -1,0 +1,46 @@
+name: Generate Master Duel Conf
+
+on:
+  schedule:
+    # Runs every 2 weeks, do not increase beyond 20 days as it risks hitting the ygoprodeck API rate limit
+    - cron: "0 0 */14 * *"
+  workflow_dispatch:
+
+jobs:
+  generate-md-conf:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Install dependencies
+        run: |
+          cd scripts
+          npm install
+
+      - name: Run MasterDuel generate script
+        id: generate-md-conf-script
+        run: node ./scripts/generateMasterDuelConf.js
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b update-masterduel-conf-${{ steps.generate-md-conf-script.outputs.run_time_date }}
+          git add .
+          git commit -m "Update Master Duel conf file ${{ steps.generate-md-conf-script.outputs.run_time_date }}"
+          git push origin HEAD || echo "No changes to commit"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Update Master Duel conf file"
+          branch: update-masterduel-conf-${{ steps.generate-md-conf-script.outputs.run_time_date }}
+          title: "Update Master Duel Conf File for ${{ steps.generate-md-conf-script.outputs.run_time_date }}"
+          body: "This PR updates the Master Duel conf file with the latest changes.\n\n${{ steps.generate-md-conf-script.outputs.changes_summary }}"
