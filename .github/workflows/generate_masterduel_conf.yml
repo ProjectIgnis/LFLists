@@ -44,5 +44,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "Update Master Duel conf file"
           branch: update-masterduel-conf-${{ steps.generate-md-conf-script.outputs.run_time_date }}
+          base: master
           title: "Update Master Duel Conf File for ${{ steps.generate-md-conf-script.outputs.run_time_date }}"
           body: "This PR updates the Master Duel conf file with the latest changes."
