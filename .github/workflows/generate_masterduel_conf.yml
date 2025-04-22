@@ -49,4 +49,4 @@ jobs:
           branch: update-masterduel-conf-${{ steps.generate-md-conf-script.outputs.run_time_date }}
           title: "Update Master Duel Conf File for ${{ steps.generate-md-conf-script.outputs.run_time_date }}"
           body: "This PR updates the Master Duel conf file with the latest changes."
-          commit-message: "Update Master Duel conf file"
+          commit-message: "Update Master Duel conf file\n ${{ steps.generate-md-conf-script.outputs.changes_summary }}"
