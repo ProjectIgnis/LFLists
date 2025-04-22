@@ -125,25 +125,22 @@ async function main() {
 
   fs.appendFileSync(confPath, "\n" + output + "\n");
 
-  core.summary.addRaw("Conf file updated").write();
   const changesSummary = [
     "### Changes Summary",
     `**Banlist Date:** ${currentBanListDate}`,
-    "",
     "**Forbidden Cards:**",
     ...forbiddenCards.map((c) => `- ${c.name} (${c.id})`),
-    "",
     "**Limited Cards:**",
     ...limitedCards.map((c) => `- ${c.name} (${c.id})`),
-    "",
     "**Semi-Limited Cards:**",
     ...semiLimitedCards.map((c) => `- ${c.name} (${c.id})`),
-    "",
     "**Unlimited Cards:**",
     ...unlimitedCards.map((c) => `- ${c.name} (${c.id})`),
   ].join("\n");
 
-  core.setOutput("changes_summary", changesSummary);
+  changesSummary.length > 65535
+    ? core.setOutput("changes_summary", changesSummary.substring(0, 65400) + "...")
+    : core.setOutput("changes_summary", changesSummary);
   core.summary.addRaw(changesSummary).write();
 }
 
