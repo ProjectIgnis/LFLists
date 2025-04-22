@@ -32,18 +32,21 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -b update-masterduel-conf-${{ steps.generate-md-conf-script.outputs.run_time_date }}
+
           git add .
+          git diff --quiet && echo "No changes to commit" && exit 0
+
+          branch=update-masterduel-conf-${{ steps.generate-md-conf-script.outputs.run_time_date }}
+          git checkout -b $branch
           git commit -m "Update Master Duel conf file ${{ steps.generate-md-conf-script.outputs.run_time_date }}"
-          git push origin HEAD || echo "No changes to commit"
+          git push origin $branch
 
       - name: Create Pull Request
         if: ${{ steps.generate-md-conf-script.outputs.has_changes == 'true' }}
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "Update Master Duel conf file"
           branch: update-masterduel-conf-${{ steps.generate-md-conf-script.outputs.run_time_date }}
-          base: master
           title: "Update Master Duel Conf File for ${{ steps.generate-md-conf-script.outputs.run_time_date }}"
           body: "This PR updates the Master Duel conf file with the latest changes."
+          commit-message: "Update Master Duel conf file"
