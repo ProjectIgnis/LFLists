@@ -77,9 +77,10 @@ async function main() {
     break;
   }
 
+  core.setOutput("has_changes", changeNeeded);
+
   if (!changeNeeded) {
     core.summary.addRaw("No changes to the card list or banlist detected. Bye, Bye.").write();
-    core.setOutput("has_changes", false);
     return;
   }
 
