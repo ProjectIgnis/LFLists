@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "generateMasterDuelConf.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build-md": "node generateMasterDuelConf.js",
+    "build-ed": "node generateEdisonConf.js"
   },
   "keywords": [],
   "author": "",
