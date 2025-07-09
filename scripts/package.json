@@ -1,0 +1,17 @@
+{
+  "name": "scripts",
+  "version": "1.0.0",
+  "main": "generateMasterDuelConf.js",
+  "scripts": {
+    "build-md": "node generateMasterDuelConf.js",
+    "build-ed": "node generateEdisonConf.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@actions/core": "^1.11.1",
+    "date-fns": "^4.1.0"
+  }
+}
